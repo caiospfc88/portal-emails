@@ -24,12 +24,6 @@ export async function POST(request: NextRequest) {
               subject: 'Feliz Aniversário!!!',
               react: AniversarianteTemplate({ firstName: nome }),
             });
-        
-            if (error) {
-              console.log("error: ",error.message)
-              return Response.json({ error }, { status: 500 });
-            }
-        
             return Response.json(data);
           } catch (error) {
             return Response.json({ error }, { status: 500 });
