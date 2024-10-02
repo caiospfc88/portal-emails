@@ -1,4 +1,6 @@
 
+import AniversarianteCliente01 from '@/app/components/AniversarianteCliente01';
+import AniversarianteCliente02 from '@/app/components/AniversarianteCliente02';
 import { AniversarianteTemplate } from '@/app/components/AniversarianteTemplate';
 import { NextRequest } from 'next/server';
 import { Resend } from 'resend';
@@ -19,7 +21,7 @@ export async function POST(request: NextRequest) {
             
         try {
             const { data, error } = await resend.emails.send({
-              from: 'Portal Groscon <portal-groscon@resend.dev>',
+              from: 'Consórcio Groscon <groscon@resend.dev>',
               to: ["ti@consorciogroscon.com.br"],
               subject: 'Feliz Aniversário!!!',
               react: AniversarianteTemplate({ firstName: nome }),
@@ -28,7 +30,35 @@ export async function POST(request: NextRequest) {
           } catch (error) {
             return Response.json({ error }, { status: 500 });
           }
-    
+
+        case 'aniversarianteCliente01':
+            
+        try {
+            const { data, error } = await resend.emails.send({
+              from: 'Consórcio Groscon <groscon@resend.dev>',
+              to: ["ti@consorciogroscon.com.br"],
+              subject: 'Consórcio Groscon deseja Feliz Aniversário!!!',
+              react: AniversarianteCliente01(),
+            });
+            return Response.json(data);
+          } catch (error) {
+            return Response.json({ error }, { status: 500 });
+          }
+
+        case 'aniversarianteCliente02':
+            
+        try {
+            const { data, error } = await resend.emails.send({
+              from: 'Consórcio Groscon <groscon@resend.dev>',
+              to: ["ti@consorciogroscon.com.br"],
+              subject: 'Consórcio Groscon deseja Feliz Aniversário!!!',
+              react: AniversarianteCliente02(),
+            });
+            return Response.json(data);
+          } catch (error) {
+            return Response.json({ error }, { status: 500 });
+          }
+  
         default:
             break;
     }
