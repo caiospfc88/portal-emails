@@ -21,8 +21,8 @@ export async function POST(request: NextRequest) {
             
         try {
             const { data, error } = await resend.emails.send({
-              from: 'Consórcio Groscon <groscon@resend.dev>',
-              to: ["ti@consorciogroscon.com.br"],
+              from: 'Consórcio Groscon <groscon@consorciogroscon.com.br>',
+              to: [email],
               subject: 'Feliz Aniversário!!!',
               react: AniversarianteTemplate({ firstName: nome }),
             });
@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
             
         try {
             const { data, error } = await resend.emails.send({
-              from: 'Consórcio Groscon <groscon@resend.dev>',
-              to: ["ti@consorciogroscon.com.br"],
+              from: 'Consórcio Groscon <groscon@consorciogroscon.com.br>',
+              to: [email],
               subject: 'Consórcio Groscon deseja Feliz Aniversário!!!',
               react: AniversarianteCliente01(),
             });
@@ -49,8 +49,8 @@ export async function POST(request: NextRequest) {
             
         try {
             const { data, error } = await resend.emails.send({
-              from: 'Consórcio Groscon <groscon@resend.dev>',
-              to: ["ti@consorciogroscon.com.br"],
+              from: 'Consórcio Groscon <groscon@consorciogroscon.com.br>',
+              to: [email],
               subject: 'Consórcio Groscon deseja Feliz Aniversário!!!',
               react: AniversarianteCliente02(),
             });
