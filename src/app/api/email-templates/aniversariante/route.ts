@@ -2,6 +2,7 @@
 import AniversarianteCliente01 from '@/app/components/AniversarianteCliente01';
 import AniversarianteCliente02 from '@/app/components/AniversarianteCliente02';
 import { AniversarianteTemplate } from '@/app/components/AniversarianteTemplate';
+import { registraEmailEnviado } from '@/app/utils/gravaHistoricoEnvio';
 import { NextRequest } from 'next/server';
 import { Resend } from 'resend';
 
@@ -15,9 +16,9 @@ export async function POST(request: NextRequest) {
     const template = await searchParams.get("template")!
     const nome = await searchParams.get("nome")!
     const email = await searchParams.get("email")!
-    console.log("params: ",template,nome,email)
+    
     switch (template) {
-        case 'aniversariante':
+        case 'aniversarianteColaborador':
             
         try {
             const { data, error } = await resend.emails.send({
@@ -26,6 +27,11 @@ export async function POST(request: NextRequest) {
               subject: 'Feliz Aniversário!!!',
               react: AniversarianteTemplate({ firstName: nome }),
             });
+            try {
+              registraEmailEnviado({id: data?.id!,nome: nome,template: template})
+            } catch (error) {
+              console.log(error)
+            } 
             return Response.json(data);
           } catch (error) {
             return Response.json({ error }, { status: 500 });
@@ -40,6 +46,11 @@ export async function POST(request: NextRequest) {
               subject: 'Consórcio Groscon deseja Feliz Aniversário!!!',
               react: AniversarianteCliente01(),
             });
+            try {
+              registraEmailEnviado({id: data?.id!,nome: nome,template: template})
+            } catch (error) {
+              console.log(error)
+            } 
             return Response.json(data);
           } catch (error) {
             return Response.json({ error }, { status: 500 });
@@ -54,6 +65,11 @@ export async function POST(request: NextRequest) {
               subject: 'Consórcio Groscon deseja Feliz Aniversário!!!',
               react: AniversarianteCliente02(),
             });
+            try {
+              registraEmailEnviado({id: data?.id!,nome: nome,template: template})
+            } catch (error) {
+              console.log(error)
+            } 
             return Response.json(data);
           } catch (error) {
             return Response.json({ error }, { status: 500 });

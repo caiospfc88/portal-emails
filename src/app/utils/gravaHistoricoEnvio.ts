@@ -26,7 +26,7 @@ export const registraEmailEnviado = async ({id,nome,template}: RegistraEmailEnvi
         ultimo_evento: result.data?.last_event!,
         template: template,
         agendado: result.data?.scheduled_at?.replace(' ', 'T').replace('+00', 'Z'),
-        retornar_para: result.data?.reply_to[0]
+        retornar_para: result.data?.reply_to == null ? "" :  result.data?.reply_to[0]
         }
         
     })
