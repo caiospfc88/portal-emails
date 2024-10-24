@@ -18,13 +18,13 @@ const listaTemplates: Array<Template> = [
         id: 2,
         template: "aniversarianteCliente01",
         titulo: "E-mail Cliente Aniversariante Modelo 1",
-        descricao: "E-mail para envio na data de aniversário dos clientes com tons mais claros."
+        descricao: "E-mail com tons mais claros para envio na data de aniversário dos clientes de grupos ativos, de cotas com versão 00 e situação normal."
     },
     {
         id: 3,
         template: "aniversarianteCliente02",
         titulo: "E-mail Cliente Aniversariante Modelo 2",
-        descricao: "E-mail para envio na data de aniversário dos clientes com tons mais escuros."
+        descricao: "E-mail com tons mais escuros para envio na data de aniversário dos clientes de grupos ativos, de cotas com versão 00 e situação normal."
     }
 ]
 

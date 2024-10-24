@@ -1,6 +1,6 @@
+import { formatDate, formatToBrazilTime } from "@/app/utils/formataData";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { Result } from "postcss";
 import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -54,7 +54,14 @@ export async function GET(request: NextRequest) {
                 }
             }
         })
-        return NextResponse.json(result)
+
+        const resultWithFormattedDate = result.map(item => ({
+            ...item,
+            data_envio: formatDate(item.data_envio),
+            agendado: formatToBrazilTime(item.agendado?.toISOString()),
+          }));
+
+        return NextResponse.json(resultWithFormattedDate)
     } catch (error) {
         return NextResponse.json({"Erro": error})
     }

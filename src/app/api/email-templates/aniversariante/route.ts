@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
     const template = await searchParams.get("template")!
     const nome = await searchParams.get("nome")!
     const email = await searchParams.get("email")!
+    const agendado = await searchParams.get("agendado")
     
     switch (template) {
         case 'aniversarianteColaborador':
@@ -26,6 +27,7 @@ export async function POST(request: NextRequest) {
               to: [email],
               subject: 'Feliz Aniversário!!!',
               react: AniversarianteTemplate({ firstName: nome }),
+              scheduledAt: agendado || undefined,
             });
             try {
               registraEmailEnviado({id: data?.id!,nome: nome,template: template})
@@ -45,6 +47,7 @@ export async function POST(request: NextRequest) {
               to: [email],
               subject: 'Consórcio Groscon deseja Feliz Aniversário!!!',
               react: AniversarianteCliente01(),
+              scheduledAt: agendado || undefined,
             });
             try {
               registraEmailEnviado({id: data?.id!,nome: nome,template: template})
@@ -64,6 +67,7 @@ export async function POST(request: NextRequest) {
               to: [email],
               subject: 'Consórcio Groscon deseja Feliz Aniversário!!!',
               react: AniversarianteCliente02(),
+              scheduledAt: agendado || undefined,
             });
             try {
               registraEmailEnviado({id: data?.id!,nome: nome,template: template})
