@@ -55,12 +55,11 @@ export async function GET(request: NextRequest) {
             }
         })
 
-        const resultWithFormattedDate = result.map(item => ({
+        const resultWithFormattedDate = result.map((item: typeof result[0]) => ({
             ...item,
             data_envio: formatDate(item.data_envio),
-            agendado: formatToBrazilTime(item.agendado?.toISOString()),
-          }));
-
+            agendado: item.agendado ? formatToBrazilTime(item.agendado.toISOString()) : null
+        }))
         return NextResponse.json(resultWithFormattedDate)
     } catch (error) {
         return NextResponse.json({"Erro": error})

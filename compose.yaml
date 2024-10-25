@@ -16,14 +16,12 @@ services:
       - .env
       - .env.local
     environment:
-      - MYSQL_DATABASE=portal_emails
-      - MYSQL_ROOT_PASSWORD=1035
-      - MYSQL_HOST=host.docker.internal
-      - MYSQL_USER=root
-      - MYSQL_PORT=3306
+      DATABASE_URL: mysql://root:1035@host.docker.internal:3306/portal_emails
     ports:
       - 3001:3001
-
+    expose:
+      - 3001
+      - 3306
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
 # start the database before your application. The `db-data` volume persists the
