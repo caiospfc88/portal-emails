@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const nome = await searchParams.get("nome")
     const email = await searchParams.get("email")
     const agendado = await searchParams.get("agendado")
-
+    console.log("Parametros: ", template,nome,email,agendado)
     if (!template || !nome || !email) {
       return Response.json({ error: 'Missing required parameters' }, { status: 400 });
   }
@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
               scheduledAt: agendado || undefined,
             });
             try {
+              console.log("ID email enviado:", data?.id)
               if (data?.id) {
                 await registraEmailEnviado({ id: data.id, nome: nome, template: template });
               }
@@ -56,6 +57,7 @@ export async function POST(request: NextRequest) {
               scheduledAt: agendado || undefined,
             });
             try {
+              console.log("ID email enviado:", data?.id)
               if (data?.id) {
                 await registraEmailEnviado({ id: data.id, nome: nome, template: template });
               }
@@ -78,6 +80,7 @@ export async function POST(request: NextRequest) {
               scheduledAt: agendado || undefined,
             });
             try {
+              console.log("ID email enviado:", data?.id)
               if (data?.id) {
                 await registraEmailEnviado({ id: data.id, nome: nome, template: template });
               }

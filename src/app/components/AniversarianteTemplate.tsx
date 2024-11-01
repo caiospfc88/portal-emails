@@ -29,12 +29,8 @@ export const AniversarianteTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
         <Preview>Feliz aniversário</Preview>
         <Tailwind>
           <Body 
-          style={
-            {backgroundImage: "url('https://consorciogroscon.com.br/novo/wp-content/uploads/conteudo-portal/baloes_fundo_azul.png')", 
-            backgroundRepeat: "space"}}
           className="bg-blue-300 w-[auto] h-[970px] font-sans" 
           >
-            
               <div className="h-6"></div>
               <Container style={{backgroundImage: "radial-gradient(circle, rgb(147, 197, 253),#002544)"}} className="rounded-3xl max-w-[570px] h-[895px]">
                 <Container className="bg-white rounded-3xl min-w-[560px] max-w-[560px] h-[800px] ">

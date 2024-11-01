@@ -23,7 +23,7 @@ export const registraEmailEnviado = async ({id,nome,template}: RegistraEmailEnvi
     if (!result.data) {
         throw new Error('Falha na resposta do Resend');
     }
-
+    console.log("retorno Resend: ", result.data)
     const novoEnvio = await prisma.envio.create({
         data: {
         id_email_enviado: result.data.id,
@@ -33,7 +33,7 @@ export const registraEmailEnviado = async ({id,nome,template}: RegistraEmailEnvi
         data_envio: result.data.created_at.replace(' ', 'T').replace('+00', 'Z'),
         assunto: result.data.subject,
         html: result.data.html,
-        ultimo_evento: result.data.last_event,
+        ultimo_evento: result.data.last_event ? result.data.last_event : "undefined",
         template: template,
         agendado: result.data.scheduled_at
         ? result.data.scheduled_at.replace(' ', 'T').replace('+00', 'Z')
@@ -42,6 +42,7 @@ export const registraEmailEnviado = async ({id,nome,template}: RegistraEmailEnvi
         }
         
     })
+    console.log("resultado insert: ", novoEnvio)
     return novoEnvio
 
 }
