@@ -100,7 +100,7 @@ export const SolicitacaoDados: React.FC<Readonly<SolicitacaoDadosProps>> = ({
                   rel="noopener noreferrer"
                 >
                   <Img
-                    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                    src="https://consorciogroscon.com.br/novo/wp-content/uploads/conteudo-portal/WhatsApp.png"
                     alt="WhatsApp"
                     width="40"
                     height="40"

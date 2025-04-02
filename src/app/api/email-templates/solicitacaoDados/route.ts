@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
   const nome = await searchParams.get("nome");
   const email = await searchParams.get("email");
   const dados = await searchParams.get("dadosSolicitados");
-  console.log("Parametros: ", nome, email, dados);
   if (!dados || !nome || !email) {
     return Response.json(
       { error: "Missing required parameters" },
@@ -28,7 +27,6 @@ export async function POST(request: NextRequest) {
       }),
     });
     try {
-      console.log("ID email enviado:", data?.id);
       if (data?.id) {
         await registraEmailEnviado({
           id: data.id,
