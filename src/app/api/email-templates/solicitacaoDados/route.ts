@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
   const nome = await searchParams.get("nome");
   const email = await searchParams.get("email");
   const dados = await searchParams.get("dadosSolicitados");
+  const agendado = await searchParams.get("agendado");
   if (!dados || !nome || !email) {
     return Response.json(
       { error: "Missing required parameters" },
@@ -25,6 +26,7 @@ export async function POST(request: NextRequest) {
         nome: nome,
         dadosSolicitados: dados,
       }),
+      scheduledAt: agendado || undefined,
     });
     try {
       if (data?.id) {
