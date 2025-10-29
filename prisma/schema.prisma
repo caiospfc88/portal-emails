@@ -26,4 +26,6 @@ model Envio {
   template         String?
   agendado         DateTime?
   retornar_para    String?
+
+  @@map("envio")
 }
