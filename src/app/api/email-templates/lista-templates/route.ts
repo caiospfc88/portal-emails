@@ -36,6 +36,13 @@ const listaTemplates: Array<Template> = [
     descricao:
       "E-mail para solicitar aos clientes os dados cadastrais necessários para atender às normas de PLD, que estão faltando no cadastro do sistema.",
   },
+  {
+    id: 5,
+    template: "recuperacaoExcluidos",
+    titulo: "E-mail Para Recuperação de Excluídos",
+    descricao:
+      "E-mail para comunicação com consorciados excluídos, uma tratativa para recuperar a cota em questão.",
+  },
 ];
 
 export async function GET() {

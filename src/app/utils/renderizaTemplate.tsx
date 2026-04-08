@@ -3,8 +3,10 @@ import AniversarianteTemplate from "../components/AniversarianteTemplate";
 import AniversarianteCliente01 from "../components/AniversarianteCliente01";
 import AniversarianteCliente02 from "../components/AniversarianteCliente02";
 import SolicitacaoDados from "../components/SolicitacaoDados";
+import RecuperacaoExcluido from "../components/RecuperacaoExcluido";
 
 const firstName = "Fulano Silva";
+const cota = "99 / 999 - 9";
 
 export const renderizaTemplate = (template: string) => {
   switch (template) {
@@ -25,9 +27,15 @@ export const renderizaTemplate = (template: string) => {
         <SolicitacaoDados
           nome={firstName}
           dadosSolicitados="Aqui estarão os dados solicitados."
-        />
+        />,
       );
       return html4;
+
+    case "recuperacaoExcluidos":
+      const html5 = render(
+        <RecuperacaoExcluido nome={firstName} cota={cota} />,
+      );
+      return html5;
 
     default:
       break;
