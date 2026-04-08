@@ -4,6 +4,7 @@ type Template = {
   id: number;
   template: string;
   titulo: string;
+  categoria: string;
   descricao: string;
 };
 
@@ -14,6 +15,7 @@ const listaTemplates: Array<Template> = [
     titulo: "E-mail Aniversariante colaborador",
     descricao:
       "E-mail para envio na data de aniversário dos funcionarios da administradora.",
+    categoria: "aniversario",
   },
   {
     id: 2,
@@ -21,6 +23,7 @@ const listaTemplates: Array<Template> = [
     titulo: "E-mail Cliente Aniversariante Modelo 1",
     descricao:
       "E-mail com tons mais claros para envio na data de aniversário dos clientes de grupos ativos, de cotas com versão 00 e situação normal.",
+    categoria: "aniversario",
   },
   {
     id: 3,
@@ -28,6 +31,7 @@ const listaTemplates: Array<Template> = [
     titulo: "E-mail Cliente Aniversariante Modelo 2",
     descricao:
       "E-mail com tons mais escuros para envio na data de aniversário dos clientes de grupos ativos, de cotas com versão 00 e situação normal.",
+    categoria: "aniversario",
   },
   {
     id: 4,
@@ -35,6 +39,7 @@ const listaTemplates: Array<Template> = [
     titulo: "E-mail Solicitação de Dados Cadastrais",
     descricao:
       "E-mail para solicitar aos clientes os dados cadastrais necessários para atender às normas de PLD, que estão faltando no cadastro do sistema.",
+    categoria: "solicitacaoDadosCadastrais",
   },
   {
     id: 5,
@@ -42,6 +47,7 @@ const listaTemplates: Array<Template> = [
     titulo: "E-mail Para Recuperação de Excluídos",
     descricao:
       "E-mail para comunicação com consorciados excluídos, uma tratativa para recuperar a cota em questão.",
+    categoria: "recuperacao",
   },
 ];
 
