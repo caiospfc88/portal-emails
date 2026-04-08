@@ -49,6 +49,30 @@ const listaTemplates: Array<Template> = [
       "E-mail para comunicação com consorciados excluídos, uma tratativa para recuperar a cota em questão.",
     categoria: "recuperacao",
   },
+  {
+    id: 6,
+    template: "recuperacaoNC1",
+    titulo: "E-mail de Cobrança NC1",
+    descricao:
+      "E-mail para comunicação de cobrança de cotas em situação NC1 (não contemplados e com uma parcela em atraso).",
+    categoria: "recuperacao",
+  },
+  {
+    id: 7,
+    template: "recuperacaoNC2",
+    titulo: "E-mail de Cobrança NC2",
+    descricao:
+      "E-mail para comunicação de cobrança de cotas em situação NC2 (não contemplados e com duas parcelas em atraso).",
+    categoria: "recuperacao",
+  },
+  {
+    id: 8,
+    template: "recuperacaoNC3",
+    titulo: "E-mail de Cobrança NC3 Aviso Cancelamento",
+    descricao:
+      "E-mail para comunicação de cobrança de cotas em situação NC3 (não contemplados e com uma parcela em atraso).",
+    categoria: "recuperacao",
+  },
 ];
 
 export async function GET() {

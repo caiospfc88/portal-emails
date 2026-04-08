@@ -55,35 +55,29 @@ export const RecuperacaoExcluido: React.FC<
               </Text>
 
               <Text className="text-[16px] text-gray-600 leading-[24px]">
-                Verificamos que sua cota <b>({cota})</b> de consórcio junto à
-                Groscon foi excluída por falta de pagamento, porém gostaríamos
-                de reforçar que essa decisão não precisa ser definitiva.
-                <br />
-                <br />O consórcio é uma das formas mais seguras e inteligentes
-                de investimento e planejamento financeiro, permitindo a
-                conquista de bens e objetivos sem juros, além de proporcionar
-                disciplina e organização ao longo do tempo. <br />
-                <br />
-                Sabemos que imprevistos acontecem, mas retomar sua cota pode ser
-                uma excelente oportunidade de dar continuidade ao seu
-                planejamento e não perder o que já foi investido. <br />
-                <br />
-                Temos opções facilitadas para regularização, pensadas justamente
-                para se adequar ao seu momento atual, possibilitando que você
-                volte a participar ativamente do grupo e dos sorteios mensais.
+                Identificamos que há parcela(s) da sua cota <b>({cota})</b> de
+                consórcio junto à Groscon em aberto até a presente data. Sabemos
+                que imprevistos acontecem, por isso entramos em contato para
+                reforçar a importância de manter seus pagamentos em dia.
                 <br />
                 <br />
-                Nossa equipe está à disposição para te apresentar as melhores
-                condições e te auxiliar nesse recomeço.
-                <br /> <br />
-                Não deixe seu planejamento parar — estamos aqui para te ajudar a
-                seguir em frente.
+                Ressaltamos que, para participar das assembleias do seu
+                consórcio, é necessário que todas as parcelas estejam
+                devidamente regularizadas. <br />
+                <br />
+                Caso deseje, podemos encaminhar o boleto atualizado por este
+                canal. <br />
+                <br />
               </Text>
 
               <Text className="text-[16px] text-gray-600 leading-[24px] font-semibold">
-                Não desista do seu plano. Entre em contato conosco para que
-                possamos, juntos, encontrar a melhor solução financeira para
-                você.
+                Se o pagamento já tiver sido realizado, por favor, desconsidere
+                este e-mail
+              </Text>
+
+              <Text className="text-[16px] text-gray-600 leading-[24px]">
+                Caso contrário, pedimos que entre em contato conosco por meio
+                dos nossos canais de atendimento:
               </Text>
 
               <Section className="text-center mb-[20px]">
