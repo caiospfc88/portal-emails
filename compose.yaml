@@ -16,7 +16,9 @@ services:
       - .env
       - .env.local
     environment:
-      DATABASE_URL: mysql://root:1035@host.docker.internal:3306/portal_emails
+      DATABASE_URL: "mysql://root:1035@host.docker.internal:3306/portal_emails"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 3001:3001
     expose:
