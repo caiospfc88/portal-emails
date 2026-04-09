@@ -16,22 +16,21 @@ import {
   Row,
 } from "@react-email/components";
 
-interface RecuperacaoExcluidoProps {
+interface RecuperacaoNC3Props {
   nome: string;
   cota: string;
 }
 
-export const RecuperacaoExcluido: React.FC<
-  Readonly<RecuperacaoExcluidoProps>
-> = ({ nome, cota }) => {
+export const RecuperacaoExcluido: React.FC<Readonly<RecuperacaoNC3Props>> = ({
+  nome,
+  cota,
+}) => {
   const whatsappLink = "https://wa.me/551637075504";
 
   return (
     <Html>
       <Head />
-      <Preview>
-        Oportunidade para regularizar sua cota - Consórcio Groscon
-      </Preview>
+      <Preview>Notificação de cancelamento de cota – Consórcio Groscon</Preview>
       <Tailwind>
         <Body className="bg-gray-100 font-sans py-[40px]">
           <Container className="bg-white rounded-[8px] mx-auto p-[24px] max-w-[600px]">
@@ -55,35 +54,28 @@ export const RecuperacaoExcluido: React.FC<
               </Text>
 
               <Text className="text-[16px] text-gray-600 leading-[24px]">
-                Verificamos que sua cota <b>({cota})</b> de consórcio junto à
-                Groscon foi excluída por falta de pagamento, porém gostaríamos
-                de reforçar que essa decisão não precisa ser definitiva.
-                <br />
-                <br />O consórcio é uma das formas mais seguras e inteligentes
-                de investimento e planejamento financeiro, permitindo a
-                conquista de bens e objetivos sem juros, além de proporcionar
-                disciplina e organização ao longo do tempo. <br />
-                <br />
-                Sabemos que imprevistos acontecem, mas retomar sua cota pode ser
-                uma excelente oportunidade de dar continuidade ao seu
-                planejamento e não perder o que já foi investido. <br />
-                <br />
-                Temos opções facilitadas para regularização, pensadas justamente
-                para se adequar ao seu momento atual, possibilitando que você
-                volte a participar ativamente do grupo e dos sorteios mensais.
+                Informamos que, devido à ausência de pagamento das parcelas em
+                aberto, sua cota <b>({cota})</b> de consórcio junto à Groscon
+                foi cancelada.
                 <br />
                 <br />
-                Nossa equipe está à disposição para te apresentar as melhores
-                condições e te auxiliar nesse recomeço.
-                <br /> <br />
-                Não deixe seu planejamento parar — estamos aqui para te ajudar a
-                seguir em frente.
+                Caso ainda haja interesse em regularizar a situação, pedimos que
+                entre em contato conosco para que possamos verificar as
+                possibilidades disponíveis. <br />
+                <br />
+                Ressaltamos que cotas canceladas permanecem participando
+                mensalmente dos sorteios destinados aos consorciados excluídos,
+                conforme as regras do grupo.
               </Text>
 
               <Text className="text-[16px] text-gray-600 leading-[24px] font-semibold">
-                Não desista do seu plano. Entre em contato conosco para que
-                possamos, juntos, encontrar a melhor solução financeira para
-                você.
+                Se o pagamento já tiver sido realizado, por favor, desconsidere
+                este e-mail.
+              </Text>
+
+              <Text className="text-[16px] text-gray-600 leading-[24px]">
+                Para mais informações ou tratativas, entre em contato conosco
+                por meio dos nossos canais de atendimento:
               </Text>
 
               <Section className="text-center mb-[20px]">
@@ -94,6 +86,10 @@ export const RecuperacaoExcluido: React.FC<
                   Contato/WhatsApp (16) 3707-5504
                 </Link>
               </Section>
+
+              <Text className="text-[16px] text-gray-600 leading-[24px] font-semibold">
+                Estamos à disposição para auxiliá-lo(a).
+              </Text>
 
               <Text className="text-[16px] text-gray-600 leading-[24px] font-semibold">
                 Atenciosamente,

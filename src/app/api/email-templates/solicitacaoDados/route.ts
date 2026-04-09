@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
   if (!dados || !nome || !email) {
     return Response.json(
       { error: "Missing required parameters" },
-      { status: 400 }
+      { status: 400 },
     );
   }
   try {
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
         await registraEmailEnviado({
           id: data.id,
           nome: nome,
-          template: "SolicitacaoDados",
+          template: "solicitacaoDados",
         });
       }
     } catch (error) {

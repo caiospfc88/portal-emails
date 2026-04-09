@@ -1,4 +1,4 @@
-import RecuperacaoExcluido from "@/app/components/RecuperacaoExcluido";
+import RecuperacaoNC3 from "@/app/components/RecuperacaoNC3";
 import { registraEmailEnviado } from "@/app/utils/gravaHistoricoEnvio";
 import { NextRequest } from "next/server";
 import { Resend } from "resend";
@@ -25,8 +25,8 @@ export async function POST(request: NextRequest) {
     const { data } = await resend.emails.send({
       from: "Consórcio Groscon <groscon@consorciogroscon.com.br>",
       to: [email],
-      subject: `${nome} Oportunidade de Recuperação da Cota: ${cota} - Groscon`,
-      react: RecuperacaoExcluido({
+      subject: `${nome} Tem parcelas da cota ${cota} em atraso - Groscon`,
+      react: RecuperacaoNC3({
         nome: nome,
         cota: cota,
       }),
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
         await registraEmailEnviado({
           id: data.id,
           nome: nome,
-          template: "recuperacaoExcluido",
+          template: "recuperacaoNC3",
         });
       } catch (dbError) {
         console.error("Erro ao gravar histórico:", dbError);

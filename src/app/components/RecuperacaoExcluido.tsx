@@ -46,7 +46,7 @@ export const RecuperacaoExcluido: React.FC<
             </Section>
 
             <Section>
-              <Heading className="text-[22px] font-bold text-gray-800 mb-[16px] mt-[20px]">
+              <Heading className="text-[22px] font-bold text-gray-600 mb-[16px] mt-[20px]">
                 Prezado(a) {nome},
               </Heading>
 

@@ -16,14 +16,15 @@ import {
   Row,
 } from "@react-email/components";
 
-interface RecuperacaoExcluidoProps {
+interface RecuperacaoNC1Props {
   nome: string;
   cota: string;
 }
 
-export const RecuperacaoExcluido: React.FC<
-  Readonly<RecuperacaoExcluidoProps>
-> = ({ nome, cota }) => {
+export const RecuperacaoExcluido: React.FC<Readonly<RecuperacaoNC1Props>> = ({
+  nome,
+  cota,
+}) => {
   const whatsappLink = "https://wa.me/551637075504";
 
   return (
@@ -46,7 +47,7 @@ export const RecuperacaoExcluido: React.FC<
             </Section>
 
             <Section>
-              <Heading className="text-[22px] font-bold text-gray-800 mb-[16px] mt-[20px]">
+              <Heading className="text-[22px] font-bold text-gray-600 mb-[16px] mt-[20px]">
                 Prezado(a) {nome},
               </Heading>
 
@@ -55,7 +56,7 @@ export const RecuperacaoExcluido: React.FC<
               </Text>
 
               <Text className="text-[16px] text-gray-600 leading-[24px]">
-                Identificamos que há parcela(s) da sua cota <b>({cota})</b> de
+                Identificamos que há uma parcela da sua cota <b>({cota})</b> de
                 consórcio junto à Groscon em aberto até a presente data. Sabemos
                 que imprevistos acontecem, por isso entramos em contato para
                 reforçar a importância de manter seus pagamentos em dia.
