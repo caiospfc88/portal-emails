@@ -1,51 +1,36 @@
-import { Resend } from "resend";
+// src/app/utils/gravaHistoricoEnvio.ts
 import { PrismaClient } from "@prisma/client";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 const prisma = new PrismaClient();
 
 type RegistraEmailEnviadoT = {
-  id: string | undefined;
+  id: string;
   nome: string;
   template: string;
+  email_destino: string;
+  email_origem: string;
+  assunto: string;
+  agendado?: string | null;
 };
 
-export const registraEmailEnviado = async ({
-  id,
-  nome,
-  template,
-}: RegistraEmailEnviadoT) => {
-  if (!id) {
-    throw new Error(
-      "Para buscar as informações no Resend, é necessario o id do email enviado"
-    );
-  }
-
-  const result = await resend.emails.get(id);
-
-  if (!result.data) {
-    throw new Error("Falha na resposta do Resend");
-  }
+export const registraEmailEnviado = async (dados: RegistraEmailEnviadoT) => {
   const novoEnvio = await prisma.envio.create({
     data: {
-      id_email_enviado: result.data.id,
-      nome: nome,
-      email_destino: result.data.to[0],
-      email_origem: result.data.from,
-      data_envio: result.data.created_at.replace(" ", "T").replace("+00", "Z"),
-      assunto: result.data.subject,
-      html: result.data.html,
-      ultimo_evento: result.data.last_event
-        ? result.data.last_event
-        : "undefined",
-      template: template,
-      agendado: result.data.scheduled_at
-        ? result.data.scheduled_at.replace(" ", "T").replace("+00", "Z")
+      id_email_enviado: dados.id,
+      nome: dados.nome,
+      email_destino: dados.email_destino,
+      email_origem: dados.email_origem,
+      data_envio: new Date().toISOString(), // Usa a data/hora atual exata do servidor
+      assunto: dados.assunto,
+      html: "Template React", // Evite salvar HTML gigante no banco para não travar consultas futuras
+      ultimo_evento: "queued", // Todo e-mail recém enviado nasce na fila
+      template: dados.template,
+      agendado: dados.agendado
+        ? new Date(dados.agendado).toISOString()
         : undefined,
-      retornar_para:
-        result.data.reply_to == null ? "" : result.data.reply_to[0],
+      retornar_para: "",
     },
   });
+
   return novoEnvio;
 };

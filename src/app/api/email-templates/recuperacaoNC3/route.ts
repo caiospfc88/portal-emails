@@ -6,26 +6,32 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
-  const searchParams = await request.nextUrl.searchParams;
-  const nome = await searchParams.get("nome");
-  const email = await searchParams.get("email");
-  const cota = await searchParams.get("grupoCotaVersao");
-  const agendado = await searchParams.get("agendado");
+  const searchParams = request.nextUrl.searchParams;
+  const nome = searchParams.get("nome");
+  const email = searchParams.get("email");
+  const cota = searchParams.get("grupoCotaVersao");
+  const agendado = searchParams.get("agendado");
 
   console.log("Params: ", nome, email, cota);
 
   if (!nome || !email || !cota) {
     return Response.json(
-      { error: "Nome , Email e Cota são obrigatórios" },
+      { error: "Nome, Email e Cota são obrigatórios" },
       { status: 400 },
     );
   }
 
+  // Define as constantes para manter o código limpo e reaproveitável na hora de salvar
+  const emailOrigem = "Consórcio Groscon <groscon@consorciogroscon.com.br>";
+  const assunto = `${nome} Tem parcelas da cota ${cota} em atraso - Groscon`;
+  const templateName = "recuperacaoNC3";
+
   try {
-    const { data } = await resend.emails.send({
-      from: "Consórcio Groscon <groscon@consorciogroscon.com.br>",
+    // 1. Tenta enviar o e-mail
+    const { data, error } = await resend.emails.send({
+      from: emailOrigem,
       to: [email],
-      subject: `${nome} Tem parcelas da cota ${cota} em atraso - Groscon`,
+      subject: assunto,
       react: RecuperacaoNC3({
         nome: nome,
         cota: cota,
@@ -33,20 +39,38 @@ export async function POST(request: NextRequest) {
       scheduledAt: agendado || undefined,
     });
 
-    if (data?.id) {
-      try {
-        await registraEmailEnviado({
-          id: data.id,
-          nome: nome,
-          template: "recuperacaoNC3",
-        });
-      } catch (dbError) {
-        console.error("Erro ao gravar histórico:", dbError);
-      }
+    // Se o Resend falhar por algum motivo (ex: quota excedida, erro de API)
+    if (error || !data?.id) {
+      return Response.json(
+        { error: "Falha ao enviar e-mail via Resend", details: error },
+        { status: 502 },
+      );
     }
+
+    // 2. Tenta gravar no banco passando todos os parâmetros (Evitando a condição de corrida)
+    await registraEmailEnviado({
+      id: data.id,
+      nome: nome,
+      template: templateName,
+      email_destino: email,
+      email_origem: emailOrigem,
+      assunto: assunto,
+      agendado: agendado,
+    });
 
     return Response.json(data);
   } catch (error) {
-    return Response.json({ error }, { status: 500 });
+    console.error(
+      `Erro crítico ao processar o envio do template ${templateName}:`,
+      error,
+    );
+    // 3. Se a gravação no banco falhar, o Front-end é notificado com o Status 500
+    return Response.json(
+      {
+        error:
+          "Erro interno: Falha ao processar e salvar o histórico de envio.",
+      },
+      { status: 500 },
+    );
   }
 }
