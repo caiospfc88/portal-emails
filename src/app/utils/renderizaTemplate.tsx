@@ -3,7 +3,7 @@ import AniversarianteTemplate from "../components/AniversarianteTemplate";
 import AniversarianteCliente01 from "../components/AniversarianteCliente01";
 import AniversarianteCliente02 from "../components/AniversarianteCliente02";
 import SolicitacaoDados from "../components/SolicitacaoDados";
-import RecuperacaoExcluido from "../components/RecuperacaoExcluido";
+import RecuperacaoExcluido from "../components/RecuperacaoExcluidos";
 import RecuperacaoNC1 from "../components/RecuperacaoNC1";
 import RecuperacaoNC2 from "../components/RecuperacaoNC2";
 import RecuperacaoNC3 from "../components/RecuperacaoNC3";

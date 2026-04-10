@@ -1,7 +1,9 @@
-import RecuperacaoNC2 from "@/app/components/RecuperacaoNC2";
-import { registraEmailEnviado } from "@/app/utils/gravaHistoricoEnvio";
 import { NextRequest } from "next/server";
 import { Resend } from "resend";
+import { render } from "@react-email/render"; // 1. Importa o renderizador
+
+import RecuperacaoNC1 from "@/app/components/RecuperacaoNC1";
+import { registraEmailEnviado } from "@/app/utils/gravaHistoricoEnvio";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -21,19 +23,21 @@ export async function POST(request: NextRequest) {
 
   // Constantes padronizadas
   const emailOrigem = "Consórcio Groscon <groscon@consorciogroscon.com.br>";
-  const assunto = `${nome} Tem parcelas da cota ${cota} em atraso - Groscon`;
-  const templateName = "recuperacaoNC2";
+  const assunto = `${nome} Tem uma parcela da cota ${cota} em atraso - Groscon`;
+  const templateName = "recuperacaoNC1";
 
   try {
-    // 1. Dispara o e-mail
+    // 2. Compila o componente React para uma string HTML
+    const htmlContent = await render(
+      <RecuperacaoNC1 nome={nome} cota={cota} />,
+    );
+
+    // 3. Dispara o e-mail usando a propriedade HTML
     const { data, error } = await resend.emails.send({
       from: emailOrigem,
       to: [email],
       subject: assunto,
-      react: RecuperacaoNC2({
-        nome: nome,
-        cota: cota,
-      }),
+      html: htmlContent, // Usa a string HTML em vez da função react
       scheduledAt: agendado || undefined,
     });
 
@@ -45,7 +49,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 2. Grava no banco com todos os dados da transação
+    // 4. Grava no banco com todos os dados da transação, salvando o código-fonte (HTML)
     await registraEmailEnviado({
       id: data.id,
       nome: nome,
@@ -53,6 +57,7 @@ export async function POST(request: NextRequest) {
       email_destino: email,
       email_origem: emailOrigem,
       assunto: assunto,
+      html: htmlContent, // Garante que a prova estática fique no banco
       agendado: agendado,
     });
 
@@ -62,7 +67,7 @@ export async function POST(request: NextRequest) {
       `Erro crítico ao processar o envio do template ${templateName}:`,
       error,
     );
-    // 3. Se houver falha no Prisma, avisa o front-end (Status 500)
+    // 5. Se houver falha no Prisma, avisa o front-end (Status 500)
     return Response.json(
       {
         error:

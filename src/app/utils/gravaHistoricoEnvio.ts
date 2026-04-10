@@ -1,4 +1,3 @@
-// src/app/utils/gravaHistoricoEnvio.ts
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -10,6 +9,7 @@ type RegistraEmailEnviadoT = {
   email_destino: string;
   email_origem: string;
   assunto: string;
+  html: string; // Exige o HTML completo
   agendado?: string | null;
 };
 
@@ -20,10 +20,10 @@ export const registraEmailEnviado = async (dados: RegistraEmailEnviadoT) => {
       nome: dados.nome,
       email_destino: dados.email_destino,
       email_origem: dados.email_origem,
-      data_envio: new Date().toISOString(), // Usa a data/hora atual exata do servidor
+      data_envio: new Date().toISOString(),
       assunto: dados.assunto,
-      html: "Template React", // Evite salvar HTML gigante no banco para não travar consultas futuras
-      ultimo_evento: "queued", // Todo e-mail recém enviado nasce na fila
+      html: dados.html, // Grava o código-fonte gigante no MySQL
+      ultimo_evento: "queued",
       template: dados.template,
       agendado: dados.agendado
         ? new Date(dados.agendado).toISOString()

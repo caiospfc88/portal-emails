@@ -16,13 +16,13 @@ import {
   Row,
 } from "@react-email/components";
 
-interface RecuperacaoExcluidoProps {
+interface RecuperacaoExcluidosProps {
   nome: string;
   cota: string;
 }
 
-export const RecuperacaoExcluido: React.FC<
-  Readonly<RecuperacaoExcluidoProps>
+export const RecuperacaoExcluidos: React.FC<
+  Readonly<RecuperacaoExcluidosProps>
 > = ({ nome, cota }) => {
   const whatsappLink = "https://wa.me/551637075504";
 
@@ -151,4 +151,4 @@ export const RecuperacaoExcluido: React.FC<
   );
 };
 
-export default RecuperacaoExcluido;
+export default RecuperacaoExcluidos;

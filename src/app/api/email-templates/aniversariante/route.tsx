@@ -1,9 +1,11 @@
+import { NextRequest } from "next/server";
+import { Resend } from "resend";
+import { render } from "@react-email/render";
+
 import AniversarianteCliente01 from "@/app/components/AniversarianteCliente01";
 import AniversarianteCliente02 from "@/app/components/AniversarianteCliente02";
 import { AniversarianteTemplate } from "@/app/components/AniversarianteTemplate";
 import { registraEmailEnviado } from "@/app/utils/gravaHistoricoEnvio";
-import { NextRequest } from "next/server";
-import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -31,22 +33,28 @@ export async function POST(request: NextRequest) {
     case "aniversarianteColaborador": {
       const assunto = "Feliz Aniversário!!!";
       try {
+        // 1. Gera o HTML usando a sintaxe JSX (suportada graças à extensão .tsx)
+        const htmlContent = await render(
+          <AniversarianteTemplate firstName={nome} />,
+        );
+
+        // 2. Envia o e-mail passando a variável de HTML
         const { data, error } = await resend.emails.send({
           from: emailOrigem,
           to: [email],
           subject: assunto,
-          react: AniversarianteTemplate({ firstName: nome }),
+          html: htmlContent,
           scheduledAt: agendado || undefined,
         });
 
         if (error || !data?.id) {
           return Response.json(
-            { error: "Falha ao enviar e-mail via Resend" },
+            { error: "Falha ao enviar e-mail via Resend", details: error },
             { status: 502 },
           );
         }
 
-        // Grava no banco com os dados que já temos
+        // 3. Grava no banco de dados, incluindo o código-fonte HTML estático
         await registraEmailEnviado({
           id: data.id,
           nome: nome,
@@ -54,6 +62,7 @@ export async function POST(request: NextRequest) {
           email_destino: email,
           email_origem: emailOrigem,
           assunto: assunto,
+          html: htmlContent,
           agendado: agendado,
         });
 
@@ -70,17 +79,19 @@ export async function POST(request: NextRequest) {
     case "aniversarianteCliente01": {
       const assunto = "Consórcio Groscon deseja Feliz Aniversário!!!";
       try {
+        const htmlContent = await render(<AniversarianteCliente01 />);
+
         const { data, error } = await resend.emails.send({
           from: emailOrigem,
           to: [email],
           subject: assunto,
-          react: AniversarianteCliente01(),
+          html: htmlContent,
           scheduledAt: agendado || undefined,
         });
 
         if (error || !data?.id) {
           return Response.json(
-            { error: "Falha ao enviar e-mail via Resend" },
+            { error: "Falha ao enviar e-mail via Resend", details: error },
             { status: 502 },
           );
         }
@@ -92,6 +103,7 @@ export async function POST(request: NextRequest) {
           email_destino: email,
           email_origem: emailOrigem,
           assunto: assunto,
+          html: htmlContent,
           agendado: agendado,
         });
 
@@ -108,17 +120,19 @@ export async function POST(request: NextRequest) {
     case "aniversarianteCliente02": {
       const assunto = "Consórcio Groscon deseja Feliz Aniversário!!!";
       try {
+        const htmlContent = await render(<AniversarianteCliente02 />);
+
         const { data, error } = await resend.emails.send({
           from: emailOrigem,
           to: [email],
           subject: assunto,
-          react: AniversarianteCliente02(),
+          html: htmlContent,
           scheduledAt: agendado || undefined,
         });
 
         if (error || !data?.id) {
           return Response.json(
-            { error: "Falha ao enviar e-mail via Resend" },
+            { error: "Falha ao enviar e-mail via Resend", details: error },
             { status: 502 },
           );
         }
@@ -130,6 +144,7 @@ export async function POST(request: NextRequest) {
           email_destino: email,
           email_origem: emailOrigem,
           assunto: assunto,
+          html: htmlContent,
           agendado: agendado,
         });
 

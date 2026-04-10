@@ -1,7 +1,9 @@
-import RecuperacaoNC1 from "@/app/components/RecuperacaoNC1";
-import { registraEmailEnviado } from "@/app/utils/gravaHistoricoEnvio";
 import { NextRequest } from "next/server";
 import { Resend } from "resend";
+import { render } from "@react-email/render"; // 1. Importa o renderizador
+
+import RecuperacaoNC3 from "@/app/components/RecuperacaoNC3";
+import { registraEmailEnviado } from "@/app/utils/gravaHistoricoEnvio";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -12,6 +14,8 @@ export async function POST(request: NextRequest) {
   const cota = searchParams.get("grupoCotaVersao");
   const agendado = searchParams.get("agendado");
 
+  console.log("Params: ", nome, email, cota);
+
   if (!nome || !email || !cota) {
     return Response.json(
       { error: "Nome, Email e Cota são obrigatórios" },
@@ -19,25 +23,27 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Constantes padronizadas
+  // Define as constantes para manter o código limpo e reaproveitável na hora de salvar
   const emailOrigem = "Consórcio Groscon <groscon@consorciogroscon.com.br>";
-  const assunto = `${nome} Tem uma parcela da cota ${cota} em atraso - Groscon`;
-  const templateName = "recuperacaoNC1";
+  const assunto = `${nome} Tem parcelas da cota ${cota} em atraso - Groscon`;
+  const templateName = "recuperacaoNC3";
 
   try {
-    // 1. Dispara o e-mail
+    // 2. Compila o componente React para uma string HTML estática
+    const htmlContent = await render(
+      <RecuperacaoNC3 nome={nome} cota={cota} />,
+    );
+
+    // 3. Tenta enviar o e-mail usando a propriedade html
     const { data, error } = await resend.emails.send({
       from: emailOrigem,
       to: [email],
       subject: assunto,
-      react: RecuperacaoNC1({
-        nome: nome,
-        cota: cota,
-      }),
+      html: htmlContent, // Usa a string HTML
       scheduledAt: agendado || undefined,
     });
 
-    // Se o serviço de e-mail falhar, bloqueia aqui e avisa o front-end (Status 502)
+    // Se o Resend falhar por algum motivo (ex: quota excedida, erro de API)
     if (error || !data?.id) {
       return Response.json(
         { error: "Falha ao enviar e-mail via Resend", details: error },
@@ -45,7 +51,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 2. Grava no banco com todos os dados da transação
+    // 4. Tenta gravar no banco passando todos os parâmetros (incluindo o HTML estático)
     await registraEmailEnviado({
       id: data.id,
       nome: nome,
@@ -53,6 +59,7 @@ export async function POST(request: NextRequest) {
       email_destino: email,
       email_origem: emailOrigem,
       assunto: assunto,
+      html: htmlContent, // Salva o HTML no banco
       agendado: agendado,
     });
 
@@ -62,7 +69,7 @@ export async function POST(request: NextRequest) {
       `Erro crítico ao processar o envio do template ${templateName}:`,
       error,
     );
-    // 3. Se houver falha no Prisma, avisa o front-end (Status 500)
+    // 5. Se a gravação no banco falhar, o Front-end é notificado com o Status 500
     return Response.json(
       {
         error:

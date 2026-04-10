@@ -1,6 +1,7 @@
 import { formatDate, formatToBrazilTime } from "@/app/utils/formataData";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+
 const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
@@ -8,29 +9,35 @@ export async function GET(request: NextRequest) {
   const email = searchParams.get("email");
   const dataEnvioParam = searchParams.get("data_envio");
   const templateParam = searchParams.get("template");
+
+  // === COLOQUE ISSO AQUI ===
+  console.log("===================================");
+  console.log("🔍 BUSCANDO NO BANCO:");
+  console.log("E-mail:", email);
+  console.log("Template:", templateParam);
+  console.log("Data (String do Front):", dataEnvioParam);
+  console.log("===================================");
+
   if (!email) {
     return NextResponse.json(
       {
         error: "Email é um parametro obrigatório, nenhum resultado encontrado!",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
-  let dataInicio: Date | undefined;
-  let dataFim: Date | undefined;
+  let filtroDataEnvio = undefined;
 
-  // Processa o parâmetro `data_envio` para ignorar o horário
+  // Monta o filtro de data com precisão e fuso horário UTC (o "Z" no final)
   if (dataEnvioParam) {
-    dataInicio = new Date(`${dataEnvioParam}T00:00:00`);
-    dataFim = new Date(`${dataEnvioParam}T23:59:59`);
-    console.log("datas: ", dataInicio, dataFim);
-    if (isNaN(dataInicio.getTime()) || isNaN(dataFim.getTime())) {
-      return NextResponse.json(
-        { error: "Invalid data_envio format" },
-        { status: 400 }
-      );
-    }
+    const dataInicio = new Date(`${dataEnvioParam}T00:00:00.000Z`);
+    const dataFim = new Date(`${dataEnvioParam}T23:59:59.999Z`);
+
+    filtroDataEnvio = {
+      gte: dataInicio,
+      lte: dataFim,
+    };
   }
 
   try {
@@ -48,17 +55,12 @@ export async function GET(request: NextRequest) {
         email_destino: {
           equals: email,
         },
-        data_envio:
-          dataInicio && dataFim
-            ? {
-                gte: dataInicio,
-                lt: dataFim,
-              }
-            : undefined,
         template: templateParam || undefined,
+        // Usa o filtro construído acima
+        data_envio: filtroDataEnvio,
       },
       orderBy: {
-        data_envio: "desc", // Ordena pela data de criação em ordem decrescente
+        data_envio: "desc",
       },
     });
 
@@ -73,6 +75,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(resultWithFormattedDate);
   } catch (error) {
     console.error("Erro ao buscar envios:", error);
-    return NextResponse.json({ Erro: error });
+    return NextResponse.json({ Erro: error }, { status: 500 });
   }
 }
