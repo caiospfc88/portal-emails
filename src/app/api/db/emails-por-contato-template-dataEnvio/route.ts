@@ -6,38 +6,37 @@ const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const email = searchParams.get("email");
+  const emailRaw = searchParams.get("email");
   const dataEnvioParam = searchParams.get("data_envio");
-  const templateParam = searchParams.get("template");
+  const templateParamRaw = searchParams.get("template");
 
-  // === COLOQUE ISSO AQUI ===
-  console.log("===================================");
-  console.log("🔍 BUSCANDO NO BANCO:");
-  console.log("E-mail:", email);
-  console.log("Template:", templateParam);
-  console.log("Data (String do Front):", dataEnvioParam);
-  console.log("===================================");
-
-  if (!email) {
+  // 1. Validação do parâmetro obrigatório
+  if (!emailRaw) {
     return NextResponse.json(
-      {
-        error: "Email é um parametro obrigatório, nenhum resultado encontrado!",
-      },
+      { error: "O parâmetro 'email' é obrigatório." },
       { status: 400 },
     );
   }
 
+  // 2. Limpeza de segurança (Evita falhas por espaços em branco)
+  const email = emailRaw.trim();
+  const templateParam = templateParamRaw ? templateParamRaw.trim() : undefined;
+
   let filtroDataEnvio = undefined;
 
-  // Monta o filtro de data com precisão e fuso horário UTC (o "Z" no final)
+  // 3. Monta o filtro de data com precisão e fuso horário UTC (o "Z" no final)
   if (dataEnvioParam) {
-    const dataInicio = new Date(`${dataEnvioParam}T00:00:00.000Z`);
-    const dataFim = new Date(`${dataEnvioParam}T23:59:59.999Z`);
+    const dataStr = dataEnvioParam.trim();
+    const dataInicio = new Date(`${dataStr}T00:00:00.000Z`);
+    const dataFim = new Date(`${dataStr}T23:59:59.999Z`);
 
-    filtroDataEnvio = {
-      gte: dataInicio,
-      lte: dataFim,
-    };
+    // Proteção extra: só aplica o filtro se as datas criadas forem válidas
+    if (!isNaN(dataInicio.getTime()) && !isNaN(dataFim.getTime())) {
+      filtroDataEnvio = {
+        gte: dataInicio,
+        lte: dataFim,
+      };
+    }
   }
 
   try {
@@ -52,11 +51,8 @@ export async function GET(request: NextRequest) {
         agendado: true,
       },
       where: {
-        email_destino: {
-          equals: email,
-        },
-        template: templateParam || undefined,
-        // Usa o filtro construído acima
+        email_destino: email,
+        template: templateParam,
         data_envio: filtroDataEnvio,
       },
       orderBy: {
@@ -64,7 +60,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    const resultWithFormattedDate = result.map((item: (typeof result)[0]) => ({
+    const resultWithFormattedDate = result.map((item) => ({
       ...item,
       data_envio: formatDate(item.data_envio),
       agendado: item.agendado
@@ -74,7 +70,10 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(resultWithFormattedDate);
   } catch (error) {
-    console.error("Erro ao buscar envios:", error);
-    return NextResponse.json({ Erro: error }, { status: 500 });
+    console.error("Erro na rota emails-por-contato-template-dataEnvio:", error);
+    return NextResponse.json(
+      { error: "Erro interno ao buscar validação de envio diário." },
+      { status: 500 },
+    );
   }
 }

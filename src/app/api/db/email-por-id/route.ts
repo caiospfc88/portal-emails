@@ -4,24 +4,26 @@ import { NextRequest, NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
-  const id = request.nextUrl.searchParams.get("id");
+  const idRaw = request.nextUrl.searchParams.get("id");
 
-  console.log("chegou aqui com id: ", id);
-
-  if (!id) {
+  if (!idRaw) {
     return NextResponse.json(
       { error: "O ID do e-mail é obrigatório." },
       { status: 400 },
     );
   }
 
+  // Trava de segurança contra espaços invisíveis
+  const id = idRaw.trim();
+  console.log("chegou aqui com id limpo: ", id);
+
   try {
-    // Busca no banco apenas a coluna HTML para economizar banda
+    // Busca no banco apenas as colunas necessárias para economizar banda
     const emailEnviado = await prisma.envio.findFirst({
       where: { id_email_enviado: id },
       select: {
         html: true,
-        ultimo_evento: true, // <--- ADICIONAMOS ISTO AQUI
+        ultimo_evento: true,
       },
     });
 
@@ -34,7 +36,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(emailEnviado);
   } catch (error) {
-    console.error("Erro ao buscar HTML do e-mail:", error);
+    console.error("Erro ao buscar HTML/Status do e-mail:", error);
     return NextResponse.json(
       { error: "Erro interno no servidor." },
       { status: 500 },
