@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams; // Removido o await desnecessário
+  const searchParams = request.nextUrl.searchParams;
   const paramInicial = searchParams.get("dataInicial");
   const paramFinal = searchParams.get("dataFinal");
 
@@ -68,9 +68,13 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // PERIGO 1 RESOLVIDO: Crava o fuso horário UTC (T00:00:00.000Z) para pegar o dia inteiro exato
-  const dataInicial = new Date(`${paramInicial}T00:00:00.000Z`);
-  const dataFinal = new Date(`${paramFinal}T23:59:59.999Z`);
+  // Pega apenas os primeiros 10 caracteres (YYYY-MM-DD), cortando fora o "T23:59:59" se o front mandar
+  const dataInicialStr = paramInicial.substring(0, 10);
+  const dataFinalStr = paramFinal.substring(0, 10);
+
+  // Agora sim, monta com o fuso correto com segurança!
+  const dataInicial = new Date(`${dataInicialStr}T00:00:00.000Z`);
+  const dataFinal = new Date(`${dataFinalStr}T23:59:59.999Z`);
 
   try {
     const result = await prisma.envio.findMany({
@@ -84,7 +88,6 @@ export async function GET(request: NextRequest) {
         data_envio: "desc",
       },
     });
-
     const resultWithFormattedDate = result.map((item: (typeof result)[0]) => ({
       ...item,
       data_envio: formatDate(item.data_envio),
