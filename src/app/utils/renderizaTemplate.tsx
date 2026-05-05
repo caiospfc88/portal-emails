@@ -7,9 +7,14 @@ import RecuperacaoExcluido from "../components/RecuperacaoExcluidos";
 import RecuperacaoNC1 from "../components/RecuperacaoNC1";
 import RecuperacaoNC2 from "../components/RecuperacaoNC2";
 import RecuperacaoNC3 from "../components/RecuperacaoNC3";
+import AvisoContemplacao from "../components/AvisoContemplacao";
 
 const firstName = "Fulano Silva";
 const cota = "99 / 999 - 9";
+const Grupo = "56";
+const Cota = "22";
+const tipoBem = "automoveis";
+const dataAssembleia = "11/05/2026";
 
 export const renderizaTemplate = (template: string) => {
   switch (template) {
@@ -51,6 +56,18 @@ export const renderizaTemplate = (template: string) => {
     case "recuperacaoNC3":
       const html8 = render(<RecuperacaoNC3 nome={firstName} cota={cota} />);
       return html8;
+
+    case "avisoContemplacao":
+      const html9 = render(
+        <AvisoContemplacao
+          nome={firstName}
+          grupo={Grupo}
+          cota={Cota}
+          tipoBem={tipoBem}
+          dataAssembleia={dataAssembleia}
+        />,
+      );
+      return html9;
 
     default:
       break;

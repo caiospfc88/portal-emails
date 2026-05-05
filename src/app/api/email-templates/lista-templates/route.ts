@@ -73,6 +73,13 @@ const listaTemplates: Array<Template> = [
       "E-mail para comunicação de cobrança de cotas em situação NC3 (não contemplados e com uma parcela em atraso).",
     categoria: "recuperacao",
   },
+  {
+    id: 9,
+    template: "avisoContemplacao",
+    titulo: "E-mail de Aviso de Contemplação",
+    descricao: "E-mail para comunicação de contemplação ao cliente.",
+    categoria: "contemplaçao",
+  },
 ];
 
 export async function GET() {
