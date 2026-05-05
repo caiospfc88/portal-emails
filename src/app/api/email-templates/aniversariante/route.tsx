@@ -79,7 +79,9 @@ export async function POST(request: NextRequest) {
     case "aniversarianteCliente01": {
       const assunto = "Consórcio Groscon deseja Feliz Aniversário!!!";
       try {
-        const htmlContent = await render(<AniversarianteCliente01 />);
+        const htmlContent = await render(
+          <AniversarianteCliente01 nome={nome} />,
+        );
 
         const { data, error } = await resend.emails.send({
           from: emailOrigem,

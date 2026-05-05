@@ -24,7 +24,7 @@ export const SolicitacaoDados: React.FC<Readonly<SolicitacaoDadosProps>> = ({
 }) => {
   const whatsappNumero = "551637075500"; // Substitua pelo número desejado
   const mensagem = encodeURIComponent(
-    `Olá, preciso de ajuda com meu cadastro. Preciso atualizar: ${dadosSolicitados}`
+    `Olá, preciso de ajuda com meu cadastro. Preciso atualizar: ${dadosSolicitados}`,
   );
   const whatsappLink = `https://wa.me/${whatsappNumero}?text=${mensagem}`;
 
@@ -44,7 +44,7 @@ export const SolicitacaoDados: React.FC<Readonly<SolicitacaoDadosProps>> = ({
             >
               <Img
                 src={
-                  "https://consorciogroscon.com.br/novo/wp-content/uploads/conteudo-portal/logoHorizontal.jpg"
+                  "http://consorciogroscon.com.br/uploads/midias_groscon/midias_emails/logoHorizontal_temp.jpg"
                 }
                 alt="Logo Consórcio Groscon"
                 width="200"
@@ -100,7 +100,7 @@ export const SolicitacaoDados: React.FC<Readonly<SolicitacaoDadosProps>> = ({
                   rel="noopener noreferrer"
                 >
                   <Img
-                    src="https://consorciogroscon.com.br/novo/wp-content/uploads/conteudo-portal/WhatsApp.png"
+                    src="http://consorciogroscon.com.br/uploads/midias_groscon/midias_emails/WhatsApp_Logo.png"
                     alt="WhatsApp"
                     width="40"
                     height="40"

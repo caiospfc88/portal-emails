@@ -37,7 +37,7 @@ export const RecuperacaoExcluido: React.FC<Readonly<RecuperacaoNC3Props>> = ({
             {/* Header com Logo */}
             <Section className="bg-[#035191] text-center py-[20px]">
               <Img
-                src="https://consorciogroscon.com.br/novo/wp-content/uploads/conteudo-portal/logoHorizontal.jpg"
+                src="http://consorciogroscon.com.br/uploads/midias_groscon/midias_emails/logoHorizontal_temp.jpg"
                 alt="Logo Consórcio Groscon"
                 width="200"
                 className="mx-auto block"
@@ -102,7 +102,7 @@ export const RecuperacaoExcluido: React.FC<Readonly<RecuperacaoNC3Props>> = ({
                 <Row>
                   <Column width="100">
                     <Img
-                      src="http://consorciogroscon.com.br/imagens/Groscon.gif"
+                      src="http://consorciogroscon.com.br/uploads/midias_groscon/assinatura/gif_assinatura_36anos.gif"
                       width="95"
                       alt="GROSCON"
                     />
@@ -119,7 +119,7 @@ export const RecuperacaoExcluido: React.FC<Readonly<RecuperacaoNC3Props>> = ({
                   <Column align="right">
                     <Link href="https://secure.d4sign.com.br/gopaperless/sustentabilidade/41dd6cd7-80a2-4875-a3aa-c34328f06fd3/Cons%C3%B3rcio-Groscon.html">
                       <Img
-                        src="https://www.consorciogroscon.com.br/novo/wp-content/uploads/2023/10/selos_2022_empresa-pt-200px.png"
+                        src="http://consorciogroscon.com.br/uploads/midias_groscon/assinatura/selos_D4sign_paperless.png"
                         width="150"
                         alt="D4Sign"
                       />
